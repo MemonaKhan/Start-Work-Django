@@ -11,10 +11,13 @@ class NewTasksForm(forms.Form):
 # Create your views here.
 
 # tasks = ["abc","foo","bar"]
-tasks = []
+# tasks = []                    #removed it bcz of sessions
 def index(request):
+    if "tasks" not in request.session:
+        request.session["tasks"] = []
     return render(request,"taskstodo/index.html",{
-        "tasks":tasks
+        # "tasks":tasks                                   #removed bcz of session
+        "tasks":request.session["tasks"]           # got error here so run command python manage.py migrate
     })
 
 def add(request):
@@ -22,7 +25,8 @@ def add(request):
         form = NewTasksForm(request.POST)
         if form.is_valid():
             task = form.cleaned_data["task"]
-            tasks.append(task)
+            # tasks.append(task)                 # used when using global variable
+            request.session["tasks"] += [task]               # use it when using session
             return HttpResponseRedirect(reverse("viewtasks"))  # but after giving appname use tasks:index here
         else:
             return render(request,"taskstodo/add.html",{
