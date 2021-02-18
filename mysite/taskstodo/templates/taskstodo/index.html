@@ -11,7 +11,10 @@
         {% for tasks in tasks %}
             <li>{{ tasks }}</li>
         {% endfor %}
+        
     </ul>
+    <!-- <a href="./add">Add Tasks</a>   Linking in html -->
+    <a href="{% url 'add' %}">Add Tasks</a>   <!-- Linking in Django using name-->
 
 </body>
 </html>
