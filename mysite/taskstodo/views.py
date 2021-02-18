@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django import forms            # for django forms
+from django.http import HttpResponseRedirect    # for redirecting page
+from django.urls import reverse     # for redirecting page
 
 class NewTasksForm(forms.Form):
     task = forms.CharField(label="New Task")
@@ -8,7 +10,8 @@ class NewTasksForm(forms.Form):
 
 # Create your views here.
 
-tasks = ["abc","foo","bar"]
+# tasks = ["abc","foo","bar"]
+tasks = []
 def index(request):
     return render(request,"taskstodo/index.html",{
         "tasks":tasks
@@ -20,6 +23,7 @@ def add(request):
         if form.is_valid():
             task = form.cleaned_data["task"]
             tasks.append(task)
+            return HttpResponseRedirect(reverse("viewtasks"))  # but after giving appname use tasks:index here
         else:
             return render(request,"taskstodo/add.html",{
                 "form" : form
